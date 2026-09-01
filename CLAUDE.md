@@ -17,9 +17,10 @@ A GitOps repo for a personal k3s homelab cluster (domain: `k8s.tstuessi.com`), m
 ```
 bootstrap/root-app.yaml   (applied manually once, out-of-band)
   -> app-of-apps/         (an ArgoCD Application per top-level concern)
-       -> infrastructure/argocd    (installs ArgoCD itself, from the upstream install.yaml)
-       -> infrastructure/traefik   (patches k3s's built-in Traefik via HelmChartConfig)
-       -> infrastructure/debug     (throwaway whoami test workload)
+       -> infrastructure/argocd     (installs ArgoCD itself, from the upstream install.yaml)
+       -> infrastructure/traefik    (patches k3s's built-in Traefik via HelmChartConfig)
+       -> infrastructure/monitoring (kube-prometheus-stack via Helm, plus a Grafana IngressRoute)
+       -> infrastructure/debug      (throwaway whoami test workload)
 ```
 
 - `bootstrap/root-app.yaml` is the entry point: an ArgoCD `Application` pointing at `app-of-apps/`, with `automated: {prune: true, selfHeal: true}`. It is applied by hand (`kubectl apply -f bootstrap/root-app.yaml`) against a cluster that already has ArgoCD running — this is the one manual step that starts the self-managing GitOps loop.
@@ -27,6 +28,7 @@ bootstrap/root-app.yaml   (applied manually once, out-of-band)
 - Each `infrastructure/<name>/` directory is a `kustomization.yaml` plus its resources. `infrastructure/argocd` notably installs ArgoCD by referencing the upstream `argoproj/argo-cd` `install.yaml` directly as a remote resource and patching `argocd-cmd-params-cm` (`server.insecure: "true"`, since TLS terminates at Traefik).
 - Ingress is via Traefik's `IngressRoute` CRD (k3s's bundled Traefik, configured through the `helm.cattle.io/v1` `HelmChartConfig` resource in `infrastructure/traefik`), not the standard `Ingress` resource.
 - All `Application.spec.destination.server` values use the in-cluster API (`https://kubernetes.default.svc`); everything runs in the same cluster ArgoCD lives in.
+- `infrastructure/monitoring` is the one component that isn't plain Kustomize: `app-of-apps/monitoring.yaml` is a multi-source ArgoCD `Application` that renders the `kube-prometheus-stack` Helm chart directly from the `prometheus-community` repo, layering `infrastructure/monitoring/values.yaml` from this git repo as overrides (via the `$values` source ref), and separately applies the `infrastructure/monitoring` kustomization (currently just the Grafana `IngressRoute`) as a third source. Grafana's admin password is the chart's auto-generated `kube-prometheus-stack-grafana` Secret in the `monitoring` namespace (`kubectl get secret -n monitoring kube-prometheus-stack-grafana -o jsonpath='{.data.admin-password}' | base64 -d`) — not sops-managed, since it's regenerable and cluster-local.
 
 ## Secrets management
 
