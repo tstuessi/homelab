@@ -6,9 +6,10 @@ tasks:
   bootstrap:
     desc: Bootstrap ArgoCD and repo access on a fresh cluster.
     cmds:
-      - kubectl apply -k infrastructure/argocd
-      - kubectl wait --for=condition=Available --timeout=180s -n argocd deployment/argocd-repo-server
+      - kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
       - sops -d bootstrap/secrets/argocd-repo-creds.yaml | kubectl apply -f -
+      - kubectl apply -k infrastructure/argocd --server-side --force-conflicts
+      - kubectl wait --for=condition=Available --timeout=180s -n argocd deployment/argocd-repo-server
       - kubectl apply -f bootstrap/root-app.yaml
 
   secrets:edit:

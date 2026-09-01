@@ -8,7 +8,8 @@ A GitOps repo for a personal k3s homelab cluster (domain: `k8s.tstuessi.com`), m
 
 ## Commands
 
-- `task apply` — `kubectl apply -f .` (defined in `Taskfile.yaml`, uses [go-task](https://taskfile.dev)). Currently the only task.
+- `task apply` — `kubectl apply -f .` (defined in `Taskfile.yaml`, uses [go-task](https://taskfile.dev)).
+- `task bootstrap`, `task secrets:edit`, `task secrets:rotate-deploy-key`, `task secrets:rotate-age-key`, `task hooks:install` — see Secrets management below.
 - There is no build, lint, or test tooling in this repo — it's pure Kubernetes YAML/Kustomize manifests, validated by applying them.
 
 ## Architecture: app-of-apps flow
@@ -42,11 +43,16 @@ A git pre-commit hook (`scripts/pre-commit.sh`, installed via
 under `bootstrap/secrets/` or any staged file containing raw private key
 material.
 
-`task bootstrap` is the one-time manual step for a fresh cluster: installs
-ArgoCD directly, decrypts and applies the repo-credentials secret, then
-applies `bootstrap/root-app.yaml` to hand control to ArgoCD.
+`task bootstrap` is the one-time manual step for a fresh cluster, in order:
+create the `argocd` namespace, decrypt and apply the repo-credentials
+secret into it, install ArgoCD directly, wait for the repo-server to be
+ready (confirming it can use the credential), then apply
+`bootstrap/root-app.yaml` to hand control to ArgoCD. The secret must exist
+before ArgoCD starts, and ArgoCD's repo connection must be confirmed
+working before the root app is applied.
 
 ## Working conventions
 
 - Since this repo is applied straight to a live personal cluster, prefer editing/adding manifests directly over introducing templating layers (Helm charts, jsonnet, etc.) unless a component specifically needs it — the existing pattern is plain Kustomize.
 - `syncPolicy.automated` is set with `prune: true` and `selfHeal: true` throughout — deleting a resource from git will delete it from the cluster on next sync, and manual `kubectl` changes to ArgoCD-managed resources get reverted.
+- Since we are using SSH auth, repositories should be referenced via `git@github.com:tstuessi/<repository_name>`

@@ -12,22 +12,24 @@ repo (e.g. a password manager entry) before you need it.
 2. Restore the age private key to `~/.config/sops/age/keys.txt` (sops'
    default lookup location) from your backup.
 3. Point `kubectl` at the new cluster.
-4. Run `task bootstrap`. This will:
+4. Run `task bootstrap`. This will, in order:
+   - Create the `argocd` namespace (the upstream install manifest assumes
+     it already exists).
+   - Decrypt and apply the ArgoCD repo-credentials secret (the GitHub
+     deploy key) into that namespace, so it's in place before ArgoCD needs it.
    - Install ArgoCD (`infrastructure/argocd`) directly, since ArgoCD can't
      manage itself before it exists.
-   - Decrypt and apply the ArgoCD repo-credentials secret (the GitHub
-     deploy key), so ArgoCD can clone this private repo.
+   - Wait for the repo-server to come up, confirming it can actually use
+     the credential to reach the private repo.
    - Apply `root-app.yaml`, handing control to ArgoCD, which will sync
-     everything else — including re-adopting its own install from step one.
+     everything else — including re-adopting its own install.
 
-## Rotating the deploy key
+## Rotating keys
 
-Generate a new SSH keypair, add the public half as a read-only Deploy Key
-on the GitHub repo, then update and re-encrypt the secret:
-
-```
-task secrets:edit -- bootstrap/secrets/argocd-repo-creds.yaml
-```
-
-`sops` decrypts to a temp file, opens `$EDITOR`, and re-encrypts on save —
-the plaintext never gets written into the repo.
+`task secrets:rotate-deploy-key` generates a new GitHub deploy key,
+registers it read-only, re-encrypts the secret, and revokes the old key.
+`task secrets:rotate-age-key` rotates the age keypair used to encrypt
+everything under `bootstrap/secrets/`. Both scripts (under `scripts/`)
+never print private key material to output. After rotating the age key,
+update your external backup with the new
+`~/.config/sops/age/keys.txt`.

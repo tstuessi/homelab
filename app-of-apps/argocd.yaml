@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/tstuessi/homelab.git
+    repoURL: git@github.com:tstuessi/homelab.git
     targetRevision: main
     path: infrastructure/argocd
   destination:
