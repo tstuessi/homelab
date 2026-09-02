@@ -11,7 +11,7 @@ spec:
     path: infrastructure/romm
   destination:
     server: https://kubernetes.default.svc
-    namespace: romm
+    namespace: default
   syncPolicy:
     automated:
       enabled: true
