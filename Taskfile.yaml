@@ -17,6 +17,11 @@ tasks:
     cmds:
       - sops {{.CLI_ARGS}}
 
+  secrets:apply:
+    desc: Decrypt and apply a sops-encrypted secret that ArgoCD doesn't manage (e.g. task secrets:apply -- bootstrap/secrets/smb-creds.yaml).
+    cmds:
+      - sops -d {{.CLI_ARGS}} | kubectl apply -f -
+
   secrets:rotate-deploy-key:
     desc: Rotate the GitHub deploy key ArgoCD uses to clone this repo.
     cmds:
