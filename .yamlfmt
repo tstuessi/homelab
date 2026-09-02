@@ -1,0 +1,6 @@
+exclude:
+  - bootstrap/secrets
+
+formatter:
+  type: basic
+  indent: 2

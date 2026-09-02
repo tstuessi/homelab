@@ -1,8 +1,6 @@
 version: "3"
-
 tasks:
   apply: kubectl apply -f .
-
   bootstrap:
     desc: Bootstrap ArgoCD and repo access on a fresh cluster.
     cmds:
@@ -11,27 +9,26 @@ tasks:
       - kubectl apply -k infrastructure/argocd --server-side --force-conflicts
       - kubectl wait --for=condition=Available --timeout=180s -n argocd deployment/argocd-repo-server
       - kubectl apply -f bootstrap/root-app.yaml
-
   secrets:edit:
     desc: Edit a sops-encrypted secret in place (e.g. task secrets:edit -- bootstrap/secrets/argocd-repo-creds.yaml).
     cmds:
       - sops {{.CLI_ARGS}}
-
   secrets:apply:
     desc: Decrypt and apply a sops-encrypted secret that ArgoCD doesn't manage (e.g. task secrets:apply -- bootstrap/secrets/smb-creds.yaml).
     cmds:
       - sops -d {{.CLI_ARGS}} | kubectl apply -f -
-
   secrets:rotate-deploy-key:
     desc: Rotate the GitHub deploy key ArgoCD uses to clone this repo.
     cmds:
       - ./scripts/rotate-deploy-key.sh
-
   secrets:rotate-age-key:
     desc: Rotate the age keypair used to encrypt secrets under bootstrap/secrets/.
     cmds:
       - ./scripts/rotate-age-key.sh
-
+  fmt:yaml:
+    desc: Reformat all non-secret YAML in the repo to 2-space indent.
+    cmds:
+      - yamlfmt .
   hooks:install:
     desc: Install the repo's git hooks (blocks committing unencrypted secrets).
     cmds:

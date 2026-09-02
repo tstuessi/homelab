@@ -8,4 +8,3 @@ spec:
     api:
       dashboard: true
       insecure: false
-

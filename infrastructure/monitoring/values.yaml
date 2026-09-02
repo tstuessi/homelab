@@ -5,7 +5,6 @@ grafana:
     enabled: true
     storageClassName: local-path
     size: 5Gi
-
 prometheus:
   prometheusSpec:
     retention: 15d
@@ -17,7 +16,6 @@ prometheus:
           resources:
             requests:
               storage: 10Gi
-
 alertmanager:
   alertmanagerSpec:
     storage:

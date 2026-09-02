@@ -7,8 +7,10 @@ repo (e.g. a password manager entry) before you need it.
 
 ## Rebuilding from scratch
 
-1. Install `sops`, `age`, `kubectl`, and `task` on the machine you're
-   bootstrapping from.
+1. Install `sops`, `age`, `kubectl`, `task`, and `yamlfmt` on the machine
+   you're bootstrapping from. (`yamlfmt` is only needed to commit changes —
+   its pre-commit hook enforces 2-space YAML formatting — not for the
+   bootstrap steps below.)
 2. Restore the age private key to `~/.config/sops/age/keys.txt` (sops'
    default lookup location) from your backup.
 3. Point `kubectl` at the new cluster.
