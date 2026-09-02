@@ -37,6 +37,14 @@ spec:
           volumeMounts:
             - name: mariadb-pv
               mountPath: /var/lib/mysql
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: romm-mariadb-root-creds
+                  key: password
+            - name: MARIADB_DATABASE
+              value: romm
       volumes:
         - name: mariadb-pv
           persistentVolumeClaim:
