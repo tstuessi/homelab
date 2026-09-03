@@ -56,6 +56,13 @@ spec:
                 secretKeyRef:
                   name: romm-mariadb-root-creds
                   key: romm_auth_secret_key
+            - name: HASHEOUS_API_ENABLED
+              value: "true"
+            - name: STEAMGRIDDB_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: romm-mariadb-root-creds
+                  key: steamgriddb_api_key
       volumes:
         - name: romm-pv
           persistentVolumeClaim:
