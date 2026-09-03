@@ -103,6 +103,17 @@ spec:
               name: webui
             - containerPort: 5555
               name: flower
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+              httpHeaders:
+                - name: Host
+                  value: paperless.k8s.tstuessi.com
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 60
       volumes:
         - name: paperless-ngx-pv
           persistentVolumeClaim:
