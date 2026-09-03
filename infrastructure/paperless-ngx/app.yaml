@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-app-svc
+spec:
+  selector:
+    app: paperless-ngx-app
+  ports:
+    - port: 80
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless-ngx-app
+spec:
+  selector:
+    matchLabels:
+      app: paperless-ngx
+  template:
+    metadata:
+      labels:
+        app: paperless-ngx
+    spec:
+      containers:
+        - name: paperless-ngx
+          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              memory: "2Gi"
+              cpu: "2"
+          env:
+            - name: PAPERLESS_DBHOST
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-secrets
+                  key: postgres_host
+            - name: PAPERLESS_DBUSER
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-secrets
+                  key: postgres_user
+            - name: PAPERLESS_DBPASS
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-secrets
+                  key: postgres_password
+            - name: PAPERLESS_DBENGINE
+              value: postgresql
+            - name: PAPERLESS_REDIS
+              value: redis://paperless-ngx-valkey-svc:6379
+            - name: PAPERLESS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-secrets
+                  key: secret_key
+            - name: PAPERLESS_TIME_ZONE
+              value: America/Chicago
+            - name: PAPERLESS_URL
+              value: http://paperless.k8s.tstuessi.com
+            - name: PAPERLESS_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-secrets
+                  key: admin_user
+            - name: PAPERLESS_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-secrets
+                  key: admin_password
+          volumeMounts:
+            - name: paperless-ngx-pv
+              mountPath: /usr/src/paperless/data
+              subPath: paperless/data
+            - name: paperless-ngx-pv
+              mountPath: /usr/src/paperless/media
+              subPath: paperless/media
+            - name: paperless-ngx-pv
+              mountPath: /usr/src/paperless/trash
+              subPath: paperless/trash
+            - name: paperless-ngx-pv
+              mountPath: /usr/src/paperless/consume
+              subPath: paperless/consume
+            - name: paperless-ngx-pv
+              mountPath: /usr/src/paperless/export
+              subPath: paperless/export
+          ports:
+            - containerPort: 8000
+      volumes:
+        - name: paperless-ngx-pv
+          persistentVolumeClaim:
+            claimName: smb-share
