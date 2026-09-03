@@ -4,7 +4,7 @@ metadata:
   name: romm
 spec:
   selector:
-    app: romm
+    app: romm-app
   ports:
     - port: 80
       targetPort: 8080

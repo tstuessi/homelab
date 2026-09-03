@@ -43,9 +43,19 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: romm-mariadb-root-creds
-                  key: password
+                  key: db_root_password
             - name: MARIADB_DATABASE
               value: romm
+            - name: MARIADB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: romm-mariadb-root-creds
+                  key: db_user
+            - name: MARIADB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: romm-mariadb-root-creds
+                  key: db_passwd
       volumes:
         - name: mariadb-pv
           persistentVolumeClaim:

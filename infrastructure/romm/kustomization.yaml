@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - ./service.yaml
   - ./database.yaml
+  - ./romm-app.yaml
