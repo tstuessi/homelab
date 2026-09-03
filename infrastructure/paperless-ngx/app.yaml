@@ -95,7 +95,9 @@ spec:
               subPath: paperless/export
           ports:
             - containerPort: 8000
+              name: webui
             - containerPort: 5555
+              name: flower
       volumes:
         - name: paperless-ngx-pv
           persistentVolumeClaim:
