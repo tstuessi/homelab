@@ -8,8 +8,10 @@ spec:
   ports:
     - port: 80
       targetPort: 8000
+      name: webUI
     - port: 81
       targetPort: 5555
+      name: flower
 ---
 apiVersion: apps/v1
 kind: Deployment
