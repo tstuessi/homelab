@@ -11,6 +11,7 @@ spec:
       labels:
         app: romm-app
     spec:
+      enableServiceLinks: false
       containers:
         - name: romm
           image: rommapp/romm:latest
