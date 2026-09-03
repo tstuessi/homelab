@@ -16,6 +16,9 @@ spec:
         - name: romm
           image: rommapp/romm:latest
           resources:
+            requests:
+              cpu: ".5"
+              memory: "500mb"
             limits:
               memory: "1Gi"
               cpu: "1"
