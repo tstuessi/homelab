@@ -2,3 +2,6 @@ creation_rules:
   - path_regex: bootstrap/secrets/.*\.yaml$
     encrypted_regex: ^(data|stringData)$
     age: age1vcp8wx4jc5ydl8e6f8nvs79zfkxu0qzv4pd3ma8lzxy79qr6rq5s5sr238
+stores:
+  yaml:
+    indent: 2

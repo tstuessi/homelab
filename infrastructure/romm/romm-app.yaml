@@ -42,27 +42,37 @@ spec:
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: romm-mariadb-root-creds
+                  name: romm-secrets
                   key: db_user
             - name: DB_PASSWD
               valueFrom:
                 secretKeyRef:
-                  name: romm-mariadb-root-creds
+                  name: romm-secrets
                   key: db_passwd
             - name: DB_NAME
               value: romm
             - name: ROMM_AUTH_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: romm-mariadb-root-creds
+                  name: romm-secrets
                   key: romm_auth_secret_key
             - name: HASHEOUS_API_ENABLED
               value: "true"
             - name: STEAMGRIDDB_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: romm-mariadb-root-creds
+                  name: romm-secrets
                   key: steamgriddb_api_key
+            - name: IGDB_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: romm-secrets
+                  key: igdb_client_id
+            - name: IGDB_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: romm-secrets
+                  key: igdb_client_secret
       volumes:
         - name: romm-pv
           persistentVolumeClaim:
