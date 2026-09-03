@@ -8,7 +8,7 @@ spec:
   ports:
     - port: 80
       targetPort: 8000
-      name: webUI
+      name: webui
     - port: 81
       targetPort: 5555
       name: flower
