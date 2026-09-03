@@ -4,7 +4,7 @@ metadata:
   name: paperless-ngx-app-svc
 spec:
   selector:
-    app: paperless-ngx-app
+    app: paperless-ngx
   ports:
     - port: 80
       targetPort: 8000
