@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-valkey-svc
+spec:
+  selector:
+    app: paperless-ngx-valkey
+  ports:
+    - port: 6379
+      targetPort: 6379
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless-ngx-valkey
+spec:
+  selector:
+    matchLabels:
+      app: paperless-ngx-valkey
+  template:
+    metadata:
+      labels:
+        app: paperless-ngx-valkey
+    spec:
+      containers:
+        - name: paperless-ngx-valkey
+          image: valkey/valkey:9-alpine
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+          ports:
+            - containerPort: 6379
+      volumes:
+        - name: redis-data
+          emptyDir: {}
