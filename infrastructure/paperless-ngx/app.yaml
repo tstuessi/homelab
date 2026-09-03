@@ -8,6 +8,8 @@ spec:
   ports:
     - port: 80
       targetPort: 8000
+    - port: 81
+      targetPort: 5555
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -71,6 +73,8 @@ spec:
                 secretKeyRef:
                   name: paperless-ngx-secrets
                   key: admin_password
+            - name: PAPERLESS_ENABLE_FLOWER
+              value: "true"
           volumeMounts:
             - name: paperless-ngx-pv
               mountPath: /usr/src/paperless/data
@@ -89,6 +93,7 @@ spec:
               subPath: paperless/export
           ports:
             - containerPort: 8000
+            - containerPort: 5555
       volumes:
         - name: paperless-ngx-pv
           persistentVolumeClaim:

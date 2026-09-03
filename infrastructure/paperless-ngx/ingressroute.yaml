@@ -8,6 +8,11 @@ spec:
     - web
   routes:
     - kind: Rule
+      match: Host(`paperless.k8s.tstuessi.com`) && PathPrefix(`/flower`)
+      services:
+        - name: paperless-ngx-app-svc
+          port: 81
+    - kind: Rule
       match: Host(`paperless.k8s.tstuessi.com`)
       services:
         - name: paperless-ngx-app-svc
