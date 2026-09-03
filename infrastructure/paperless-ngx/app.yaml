@@ -78,9 +78,8 @@ spec:
             - name: PAPERLESS_ENABLE_FLOWER
               value: "true"
           volumeMounts:
-            - name: paperless-ngx-pv
+            - name: paperless-ngx-data
               mountPath: /usr/src/paperless/data
-              subPath: paperless/data
             - name: paperless-ngx-pv
               mountPath: /usr/src/paperless/media
               subPath: paperless/media
@@ -102,3 +101,5 @@ spec:
         - name: paperless-ngx-pv
           persistentVolumeClaim:
             claimName: smb-share
+        - name: paperless-ngx-data
+          emptyDir: {}
