@@ -65,6 +65,8 @@ spec:
               value: America/Chicago
             - name: PAPERLESS_URL
               value: http://paperless.k8s.tstuessi.com
+            - name: PAPERLESS_CSRF_TRUSTED_ORIGINS
+              value: http://paperless.k8s.tstuessi.com,https://paperless.k8s.tstuessi.com
             - name: PAPERLESS_ADMIN_USER
               valueFrom:
                 secretKeyRef:
