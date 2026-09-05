@@ -20,7 +20,7 @@ spec:
   type: LoadBalancer
   ports:
     - port: 2222
-      targetPort: 22
+      targetPort: 222
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -59,7 +59,7 @@ spec:
               subPath: forgejo/repositories
           ports:
             - containerPort: 3000
-            - containerPort: 22
+            - containerPort: 222
       volumes:
         - name: forgejo-pv
           persistentVolumeClaim:
