@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A GitOps repo for a personal k3s homelab cluster (domain: `k8s.tstuessi.com`), managed via ArgoCD using the app-of-apps pattern. Everything in the cluster, including ArgoCD itself, is declared here and reconciled from `main` on `git@github.com:tstuessi/homelab.git` (private repo).
+A GitOps repo for a personal k3s homelab cluster (domain: `k8s.tstuessi.com`), managed via ArgoCD using the app-of-apps pattern. Everything in the cluster, including ArgoCD itself, is declared here and reconciled from `main` on `https://forgejo.k8s.tstuessi.com/tstuessi/homelab.git` (.
 
 ## Commands
 
@@ -57,4 +57,4 @@ working before the root app is applied.
 
 - Since this repo is applied straight to a live personal cluster, prefer editing/adding manifests directly over introducing templating layers (Helm charts, jsonnet, etc.) unless a component specifically needs it — the existing pattern is plain Kustomize.
 - `syncPolicy.automated` is set with `prune: true` and `selfHeal: true` throughout — deleting a resource from git will delete it from the cluster on next sync, and manual `kubectl` changes to ArgoCD-managed resources get reverted.
-- Since we are using SSH auth, repositories should be referenced via `git@github.com:tstuessi/<repository_name>`
+- Since we are using SSH auth, repositories should be referenced via `https://forgejo.k8s.tstuessi.com/tstuessi/<repository_name>`

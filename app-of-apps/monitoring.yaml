@@ -13,10 +13,10 @@ spec:
         releaseName: kube-prometheus-stack
         valueFiles:
           - $values/infrastructure/monitoring/values.yaml
-    - repoURL: git@github.com:tstuessi/homelab.git
+    - repoURL: https://forgejo.k8s.tstuessi.com/tstuessi/homelab.git
       targetRevision: main
       ref: values
-    - repoURL: git@github.com:tstuessi/homelab.git
+    - repoURL: https://forgejo.k8s.tstuessi.com/tstuessi/homelab.git
       targetRevision: main
       path: infrastructure/monitoring
   destination:
