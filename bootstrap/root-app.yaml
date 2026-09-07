@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: ssh://forgejo-ssh.k8s.tstuessi.com:2222/tstuessi/homelab.git
+    repoURL: https://forgejo.k8s.tstuessi.com/tstuessi/homelab.git
     targetRevision: main
     path: app-of-apps
   destination:
