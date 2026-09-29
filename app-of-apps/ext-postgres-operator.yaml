@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ext-postgres-operator
+  namespace: operators
+spec:
+  project: default
+  sources:
+    - repoURL: https://movetokube.github.io/postgres-operator/
+      chart: ext-postgres-operator/ext-postgres-operator
+      targetRevision: 3.0.0
+      helm:
+        releaseName: ext-postgres-operator
+        valueFiles:
+          - $values/infrastructure/ext-postgres-operator/values.yaml
+    - repoURL: https://forgejo.k8s.tstuessi.com/tstuessi/homelab.git
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: operators
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
+      - CreateNamespace=true
