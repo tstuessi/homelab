@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://forgejo.k8s.tstuessi.com/tstuessi/fullstack-template-example.git
+    repoURL: https://forgejo.k8s.tstuessi.com/tstuessi/fullstack-example.git
     targetRevision: main
     path: k8s
   destination:
