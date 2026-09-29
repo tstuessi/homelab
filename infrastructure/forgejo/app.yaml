@@ -43,6 +43,28 @@ spec:
               value: "1000"
             - name: USER_GID
               value: "1000"
+            - name: FORGEJO__database__DB_TYPE
+              value: postgres
+            - name: FORGEJO__database__HOST
+              valueFrom:
+                secretKeyRef:
+                  name: pg-creds-forgejo-db-user
+                  key: db_host
+            - name: FORGEJO__database__NAME
+              valueFrom:
+                secretKeyRef:
+                  name: pg-creds-forgejo-db-user
+                  key: db_db
+            - name: FORGEJO__database__USER
+              valueFrom:
+                secretKeyRef:
+                  name: pg-creds-forgejo-db-user
+                  key: db_user
+            - name: FORGEJO__database__PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-creds-forgejo-db-user
+                  key: db_passwd
           resources:
             requests:
               memory: "512Mi"
