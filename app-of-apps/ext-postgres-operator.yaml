@@ -7,7 +7,7 @@ spec:
   project: default
   sources:
     - repoURL: https://movetokube.github.io/postgres-operator/
-      chart: ext-postgres-operator/ext-postgres-operator
+      chart: ext-postgres-operator
       targetRevision: 3.0.0
       helm:
         releaseName: ext-postgres-operator
