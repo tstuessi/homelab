@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: ext-postgres-operator
-  namespace: operators
+  namespace: argocd
 spec:
   project: default
   sources:
