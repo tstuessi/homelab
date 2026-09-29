@@ -1,0 +1,23 @@
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: forgejo-db
+  namespace: default
+spec:
+  database: forgejo-db
+  dropOnDelete: False
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: forgejo-db-user
+  namespace: default
+spec:
+  role: forgejo-db-user
+  database: forgejo-db
+  secretName: pg-creds
+  secretTemplate:
+    db_host: {? {.Hostname: ''} : ''}
+    db_user: {? {.Role: ''} : ''}
+    db_passwd: {? {.Password: ''} : ''}
+    db_db: {? {.Database: ''} : ''}
