@@ -41,7 +41,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: pg-creds-paperless-db-user
-                  key: HOST
+                  key: HOSTNAME
             - name: PAPERLESS_DBUSER
               valueFrom:
                 secretKeyRef:
