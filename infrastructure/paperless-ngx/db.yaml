@@ -15,5 +15,5 @@ metadata:
 spec:
   role: paperless-db-user
   database: paperless-db
-  privileges: WRITE
+  privileges: OWNER
   secretName: pg-creds
