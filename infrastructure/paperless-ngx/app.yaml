@@ -40,18 +40,18 @@ spec:
             - name: PAPERLESS_DBHOST
               valueFrom:
                 secretKeyRef:
-                  name: paperless-ngx-secrets
-                  key: postgres_host
+                  name: pg-creds-paperless-db-user
+                  key: HOST
             - name: PAPERLESS_DBUSER
               valueFrom:
                 secretKeyRef:
-                  name: paperless-ngx-secrets
-                  key: postgres_user
+                  name: pg-creds-paperless-db-user
+                  key: ROLE
             - name: PAPERLESS_DBPASS
               valueFrom:
                 secretKeyRef:
-                  name: paperless-ngx-secrets
-                  key: postgres_password
+                  name: pg-creds-paperless-db-user
+                  key: PASSWORD
             - name: PAPERLESS_DBENGINE
               value: postgresql
             - name: PAPERLESS_REDIS
