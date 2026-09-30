@@ -1,0 +1,19 @@
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: paperless-db
+  namespace: default
+spec:
+  database: paperless
+  dropOnDelete: False
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: paperless-db-user
+  namespace: default
+spec:
+  role: paperless-db-user
+  database: paperless
+  privileges: WRITE
+  secretName: pg-creds

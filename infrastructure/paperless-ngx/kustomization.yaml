@@ -4,3 +4,4 @@ resources:
   - ./broker.yaml
   - ./app.yaml
   - ./ingressroute.yaml
+  - ./db.yaml
