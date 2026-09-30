@@ -14,6 +14,6 @@ metadata:
   namespace: default
 spec:
   role: paperless-db-user
-  database: paperless
+  database: paperless-db
   privileges: WRITE
   secretName: pg-creds
